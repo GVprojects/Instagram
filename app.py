@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
 import sqlite3
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 DATABASE = "phishing.db"
 
-# ---------- DATABASE ----------
 def init_db():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
@@ -23,7 +23,6 @@ def init_db():
 
 init_db()
 
-# ---------- USER PAGE ----------
 @app.route("/", methods=["GET", "POST"])
 def user_page():
     if request.method == "POST":
@@ -45,7 +44,6 @@ def user_page():
 
     return render_template("user.html", logged_in=False)
 
-# ---------- ADMIN ----------
 @app.route("/admin")
 def admin():
     conn = sqlite3.connect(DATABASE)
@@ -56,4 +54,5 @@ def admin():
     return render_template("admin.html", data=data)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
