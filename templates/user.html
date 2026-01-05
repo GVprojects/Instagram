@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        :root {
+            --ig-primary-background: #000000;
+            --ig-secondary-background: #121212;
+            --ig-primary-text: #ffffff;
+            --ig-secondary-text: #a8a8a8;
+            --ig-blue: #0095f6;
+            --ig-red: #ed4956;
+            --ig-border: #262626;
+            --ig-elevated-separator: #363636;
+        }
+        
+        body {
+            background-color: var(--ig-primary-background);
+            color: var(--ig-primary-text);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* LOGIN PAGE */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .login-box {
+            width: 100%;
+            max-width: 350px;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 40px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: #262626;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 9px 0 7px 8px;
+            margin-bottom: 6px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: #a8a8a8;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 7px;
+            margin-top: 12px;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .login-btn:hover {
+            background-color: #0081d6;
+        }
+        
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .separator::before,
+        .separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #dbdbdb;
+        }
+        
+        .separator span {
+            margin: 0 18px;
+        }
+        
+        .fb-login {
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .forgot-password {
+            color: #00376b;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .signup-box {
+            width: 100%;
+            max-width: 350px;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 25px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .signup-link {
+            color: #0095f6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        /* INSTAGRAM MAIN CONTAINER */
+        .instagram-container {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            background-color: var(--ig-primary-background);
+        }
+        
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--ig-primary-background);
+            border-bottom: 1px solid var(--ig-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+        }
+        
+        .instagram-logo {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 28px;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+        
+        .top-nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        
+        .top-nav-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--ig-primary-text);
+        }
+        
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--ig-primary-background);
+            border-top: 1px solid var(--ig-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 60px;
+            height: 100%;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: var(--ig-primary-text);
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            color: var(--ig-primary-text);
+        }
+        
+        .nav-item.active .nav-icon,
+        .nav-item.active .nav-label {
+            color: var(--ig-primary-text);
+        }
+        
+        .nav-item.active.reels .nav-icon {
+            color: var(--ig-primary-text);
+        }
+        
+        /* MAIN CONTENT - REELS PAGE (DEFAULT) */
+        .main-content {
+            position: absolute;
+            top: 60px;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+        }
+        
+        /* REELS CONTAINER */
+        .reels-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* INDIVIDUAL REEL */
+        .reel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            display: none;
+        }
+        
+        .reel.active {
+            display: block;
+        }
+        
+        .reel-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .reel-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .reel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.8) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        
+        .reel-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .reel-back {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .reel-audio {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .reel-content {
+            display: flex;
+            height: calc(100% - 100px);
+        }
+        
+        .reel-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 40px;
+        }
+        
+        .reel-user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .reel-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+        .reel-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .reel-user-details {
+            flex: 1;
+        }
+        
+        .reel-username {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .reel-follow-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .reel-follow-btn.following {
+            background: white;
+            color: black;
+        }
+        
+        .reel-caption {
+            font-size: 15px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            max-width: 80%;
+        }
+        
+        .reel-music-info {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .music-icon {
+            margin-right: 8px;
+        }
+        
+        .reel-right {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 40px;
+        }
+        
+        .reel-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+        
+        .reel-action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .reel-action-count {
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .reel-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            padding: 0 20px;
+        }
+        
+        .reel-progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            margin-right: 4px;
+            flex: 1;
+            transition: width 0.3s;
+        }
+        
+        .reel-progress-bar.active {
+            background: white;
+        }
+        
+        /* OTHER PAGES (HIDDEN BY DEFAULT) */
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background-color: var(--ig-primary-background);
+            overflow-y: auto;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* HOME PAGE */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            padding: 16px 0;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+            cursor: pointer;
+        }
+        
+        .story-circle {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .story-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: var(--ig-primary-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .story-username {
+            font-size: 12px;
+        }
+        
+        .feed-post {
+            background-color: var(--ig-primary-background);
+            border: 1px solid var(--ig-border);
+            border-radius: 3px;
+            margin-bottom: 24px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+        }
+        
+        .post-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            overflow: hidden;
+        }
+        
+        .post-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .post-username {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .post-more {
+            margin-left: auto;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 400px;
+            background-color: var(--ig-border);
+        }
+        
+        .post-actions {
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .post-action {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .post-likes {
+            font-weight: 600;
+            font-size: 14px;
+            padding: 0 14px 8px;
+        }
+        
+        .post-caption {
+            padding: 0 14px 8px;
+            font-size: 14px;
+        }
+        
+        .post-comments {
+            padding: 0 14px 8px;
+            font-size: 14px;
+            color: var(--ig-secondary-text);
+        }
+        
+        .post-time {
+            padding: 0 14px 12px;
+            font-size: 10px;
+            color: var(--ig-secondary-text);
+            text-transform: uppercase;
+        }
+        
+        /* SEARCH PAGE */
+        .search-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-input-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            background-color: var(--ig-secondary-background);
+            border: none;
+            border-radius: 10px;
+            color: var(--ig-primary-text);
+            font-size: 16px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+        }
+        
+        .search-cancel {
+            color: var(--ig-blue);
+            font-weight: 600;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .search-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .search-category {
+            padding: 8px 16px;
+            background-color: var(--ig-secondary-background);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .search-category.active {
+            background-color: var(--ig-primary-text);
+            color: var(--ig-primary-background);
+        }
+        
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        
+        .search-result {
+            aspect-ratio: 1/1;
+            background-color: var(--ig-border);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-result img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* CREATE PAGE */
+        .create-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+        
+        .create-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--ig-secondary-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .create-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .create-subtitle {
+            color: var(--ig-secondary-text);
+            margin-bottom: 30px;
+        }
+        
+        .create-options {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 30px;
+        }
+        
+        .create-option {
+            padding: 16px;
+            background-color: var(--ig-secondary-background);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .create-option-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        /* PROFILE PAGE */
+        .profile-header {
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+            overflow: hidden;
+            border: 2px solid var(--ig-border);
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-stats {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .profile-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .profile-stat-value {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .profile-stat-label {
+            font-size: 13px;
+            color: var(--ig-secondary-text);
+        }
+        
+        .profile-info {
+            margin-bottom: 20px;
+        }
+        
+        .profile-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .profile-bio {
+            font-size: 14px;
+            color: var(--ig-secondary-text);
+            margin-bottom: 15px;
+        }
+        
+        .profile-edit-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--ig-secondary-background);
+            border: none;
+            border-radius: 8px;
+            color: var(--ig-primary-text);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .profile-highlights {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .profile-highlight {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+        
+        .highlight-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--ig-secondary-background);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .highlight-name {
+            font-size: 12px;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            border-top: 1px solid var(--ig-border);
+        }
+        
+        .profile-tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            font-size: 14px;
+            color: var(--ig-secondary-text);
+            cursor: pointer;
+        }
+        
+        .profile-tab.active {
+            color: var(--ig-primary-text);
+            border-top: 1px solid var(--ig-primary-text);
+            margin-top: -1px;
+        }
+        
+        .profile-posts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin-top: 20px;
+        }
+        
+        .profile-post {
+            aspect-ratio: 1/1;
+            background-color: var(--ig-border);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-post img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        
+        /* ANIMATIONS */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        /* RESPONSIVE */
+        @media (min-width: 768px) {
+            .instagram-container {
+                max-width: 430px;
+                margin: 0 auto;
+                border-left: 1px solid var(--ig-border);
+                border-right: 1px solid var(--ig-border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="login-container" class="login-container">
+        <div class="login-box">
+            <div class="logo">Instagram</div>
+            <form class="login-form" id="login-form">
+                <input type="text" id="username" placeholder="Phone number, username, or email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+            
+            <div class="separator">
+                <span>OR</span>
+            </div>
+            
+            <div class="fb-login">
+                <i class="fab fa-facebook-square"></i> Log in with Facebook
+            </div>
+            
+            <div class="forgot-password">Forgot password?</div>
+        </div>
+        
+        <div class="signup-box">
+            Don't have an account? <a href="#" class="signup-link">Sign up</a>
+        </div>
+    </div>
+    
+    <!-- INSTAGRAM MAIN INTERFACE -->
+    <div id="instagram-container" class="instagram-container">
+        <!-- TOP NAVIGATION -->
+        <div class="top-nav">
+            <div class="instagram-logo" id="logo-home">Instagram</div>
+            <div class="top-nav-icons">
+                <div class="top-nav-icon" id="nav-messenger">
+                    <i class="far fa-paper-plane"></i>
+                </div>
+                <div class="top-nav-icon" id="nav-create">
+                    <i class="far fa-square-plus"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MAIN CONTENT -->
+        <div class="main-content" id="main-content">
+            <!-- REELS PAGE (ACTIVE BY DEFAULT) -->
+            <div class="reels-container" id="reels-page">
+                <!-- Reel 1 -->
+                <div class="reel active" data-reel="1">
+                    <div class="reel-video-container">
+                        <video class="reel-video" loop muted playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="reel-overlay">
+                        <div class="reel-top-bar">
+                            <div class="reel-back">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="reel-audio">
+                                <i class="fas fa-music"></i> Original Audio
+                            </div>
+                        </div>
+                        <div class="reel-content">
+                            <div class="reel-left">
+                                <div class="reel-user-info">
+                                    <div class="reel-user-avatar">
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                                    </div>
+                                    <div class="reel-user-details">
+                                        <div class="reel-username">jennifer.miller</div>
+                                    </div>
+                                    <button class="reel-follow-btn">Follow</button>
+                                </div>
+                                <div class="reel-caption">
+                                    Morning walk in the park 🌳 Feeling grateful for these beautiful moments. #nature #morningwalk #gratitude
+                                </div>
+                                <div class="reel-music-info">
+                                    <span class="music-icon"><i class="fas fa-music"></i></span>
+                                    <span>jennifer.miller · Original audio</span>
+                                </div>
+                            </div>
+                            <div class="reel-right">
+                                <div class="reel-action" data-action="like">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div class="reel-action-count">245.6K</div>
+                                </div>
+                                <div class="reel-action" data-action="comment">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-comment"></i>
+                                    </div>
+                                    <div class="reel-action-count">12.4K</div>
+                                </div>
+                                <div class="reel-action" data-action="share">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-paper-plane"></i>
+                                    </div>
+                                    <div class="reel-action-count">Share</div>
+                                </div>
+                                <div class="reel-action" data-action="more">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reel-progress">
+                            <div class="reel-progress-bar active"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reel 2 -->
+                <div class="reel" data-reel="2">
+                    <div class="reel-video-container">
+                        <video class="reel-video" loop muted playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-slicing-a-tomato-23421-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="reel-overlay">
+                        <div class="reel-top-bar">
+                            <div class="reel-back">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="reel-audio">
+                                <i class="fas fa-music"></i> Trending Audio
+                            </div>
+                        </div>
+                        <div class="reel-content">
+                            <div class="reel-left">
+                                <div class="reel-user-info">
+                                    <div class="reel-user-avatar">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                                    </div>
+                                    <div class="reel-user-details">
+                                        <div class="reel-username">chef_alex</div>
+                                    </div>
+                                    <button class="reel-follow-btn following">Following</button>
+                                </div>
+                                <div class="reel-caption">
+                                    Quick and healthy breakfast idea 🍳 Avocado toast with poached eggs and cherry tomatoes. Ready in 10 minutes! #breakfastideas #healthyfood #cooking
+                                </div>
+                                <div class="reel-music-info">
+                                    <span class="music-icon"><i class="fas fa-music"></i></span>
+                                    <span>Trending sound · chef_alex</span>
+                                </div>
+                            </div>
+                            <div class="reel-right">
+                                <div class="reel-action" data-action="like">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div class="reel-action-count">421.8K</div>
+                                </div>
+                                <div class="reel-action" data-action="comment">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-comment"></i>
+                                    </div>
+                                    <div class="reel-action-count">34.2K</div>
+                                </div>
+                                <div class="reel-action" data-action="share">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-paper-plane"></i>
+                                    </div>
+                                    <div class="reel-action-count">Share</div>
+                                </div>
+                                <div class="reel-action" data-action="more">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reel-progress">
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar active"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reel 3 -->
+                <div class="reel" data-reel="3">
+                    <div class="reel-video-container">
+                        <video class="reel-video" loop muted playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="reel-overlay">
+                        <div class="reel-top-bar">
+                            <div class="reel-back">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="reel-audio">
+                                <i class="fas fa-music"></i> Ocean Sounds
+                            </div>
+                        </div>
+                        <div class="reel-content">
+                            <div class="reel-left">
+                                <div class="reel-user-info">
+                                    <div class="reel-user-avatar">
+                                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                                    </div>
+                                    <div class="reel-user-details">
+                                        <div class="reel-username">travelwithsarah</div>
+                                    </div>
+                                    <button class="reel-follow-btn">Follow</button>
+                                </div>
+                                <div class="reel-caption">
+                                    Sunset at the beach 🏖️ This place is pure magic! Can't wait to come back. #beachvibes #sunset #travel
+                                </div>
+                                <div class="reel-music-info">
+                                    <span class="music-icon"><i class="fas fa-music"></i></span>
+                                    <span>Ocean Waves · Original audio</span>
+                                </div>
+                            </div>
+                            <div class="reel-right">
+                                <div class="reel-action" data-action="like">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-heart" style="color: #ed4956;"></i>
+                                    </div>
+                                    <div class="reel-action-count">678.3K</div>
+                                </div>
+                                <div class="reel-action" data-action="comment">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-comment"></i>
+                                    </div>
+                                    <div class="reel-action-count">56.7K</div>
+                                </div>
+                                <div class="reel-action" data-action="share">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-paper-plane"></i>
+                                    </div>
+                                    <div class="reel-action-count">Share</div>
+                                </div>
+                                <div class="reel-action" data-action="more">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reel-progress">
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar active"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reel 4 -->
+                <div class="reel" data-reel="4">
+                    <div class="reel-video-container">
+                        <video class="reel-video" loop muted playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-man-doing-tricks-with-a-skateboard-34550-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="reel-overlay">
+                        <div class="reel-top-bar">
+                            <div class="reel-back">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="reel-audio">
+                                <i class="fas fa-music"></i> Skate Vibes
+                            </div>
+                        </div>
+                        <div class="reel-content">
+                            <div class="reel-left">
+                                <div class="reel-user-info">
+                                    <div class="reel-user-avatar">
+                                        <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005-128-b635007e51c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                                    </div>
+                                    <div class="reel-user-details">
+                                        <div class="reel-username">skate_life</div>
+                                    </div>
+                                    <button class="reel-follow-btn">Follow</button>
+                                </div>
+                                <div class="reel-caption">
+                                    Nailed this trick after weeks of practice! Skateboarding is all about persistence. #skateboarding #trick #practice
+                                </div>
+                                <div class="reel-music-info">
+                                    <span class="music-icon"><i class="fas fa-music"></i></span>
+                                    <span>Skate Vibes · Original audio</span>
+                                </div>
+                            </div>
+                            <div class="reel-right">
+                                <div class="reel-action" data-action="like">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div class="reel-action-count">124.5K</div>
+                                </div>
+                                <div class="reel-action" data-action="comment">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-comment"></i>
+                                    </div>
+                                    <div class="reel-action-count">8.9K</div>
+                                </div>
+                                <div class="reel-action" data-action="share">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-paper-plane"></i>
+                                    </div>
+                                    <div class="reel-action-count">Share</div>
+                                </div>
+                                <div class="reel-action" data-action="more">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reel-progress">
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar active"></div>
+                            <div class="reel-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reel 5 -->
+                <div class="reel" data-reel="5">
+                    <div class="reel-video-container">
+                        <video class="reel-video" loop muted playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-artist-painting-on-canvas-22-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="reel-overlay">
+                        <div class="reel-top-bar">
+                            <div class="reel-back">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="reel-audio">
+                                <i class="fas fa-music"></i> Calm Painting
+                            </div>
+                        </div>
+                        <div class="reel-content">
+                            <div class="reel-left">
+                                <div class="reel-user-info">
+                                    <div class="reel-user-avatar">
+                                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                                    </div>
+                                    <div class="reel-user-details">
+                                        <div class="reel-username">art.by.maya</div>
+                                    </div>
+                                    <button class="reel-follow-btn following">Following</button>
+                                </div>
+                                <div class="reel-caption">
+                                    Time-lapse of my latest painting 🎨 This one took about 15 hours to complete. Acrylic on canvas. #art #painting #timelapse
+                                </div>
+                                <div class="reel-music-info">
+                                    <span class="music-icon"><i class="fas fa-music"></i></span>
+                                    <span>Calm Painting · art.by.maya</span>
+                                </div>
+                            </div>
+                            <div class="reel-right">
+                                <div class="reel-action" data-action="like">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-heart" style="color: #ed4956;"></i>
+                                    </div>
+                                    <div class="reel-action-count">342.1K</div>
+                                </div>
+                                <div class="reel-action" data-action="comment">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-comment"></i>
+                                    </div>
+                                    <div class="reel-action-count">23.4K</div>
+                                </div>
+                                <div class="reel-action" data-action="share">
+                                    <div class="reel-action-icon">
+                                        <i class="far fa-paper-plane"></i>
+                                    </div>
+                                    <div class="reel-action-count">Share</div>
+                                </div>
+                                <div class="reel-action" data-action="more">
+                                    <div class="reel-action-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reel-progress">
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar"></div>
+                            <div class="reel-progress-bar active"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- HOME PAGE -->
+            <div class="page" id="home-page">
+                <div class="stories-container">
+                    <div class="story-item">
+                        <div class="story-circle">
+                            <div class="story-inner">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="story-username">Your story</div>
+                    </div>
+                    <div class="story-item">
+                        <div class="story-circle">
+                            <div class="story-inner">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                            </div>
+                        </div>
+                        <div class="story-username">jennifer.miller</div>
+                    </div>
+                    <div class="story-item">
+                        <div class="story-circle">
+                            <div class="story-inner">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                            </div>
+                        </div>
+                        <div class="story-username">chef_alex</div>
+                    </div>
+                    <div class="story-item">
+                        <div class="story-circle">
+                            <div class="story-inner">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                            </div>
+                        </div>
+                        <div class="story-username">travelwithsarah</div>
+                    </div>
+                </div>
+                
+                <div class="feed-post">
+                    <div class="post-header">
+                        <div class="post-user-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                        </div>
+                        <div class="post-username">jennifer.miller</div>
+                        <div class="post-more">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="post-image" style="background: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="far fa-heart"></i></div>
+                        <div class="post-action"><i class="far fa-comment"></i></div>
+                        <div class="post-action"><i class="far fa-paper-plane"></i></div>
+                        <div class="post-action" style="margin-left: auto;"><i class="far fa-bookmark"></i></div>
+                    </div>
+                    <div class="post-likes">245,621 likes</div>
+                    <div class="post-caption">
+                        <strong>jennifer.miller</strong> Sunday morning vibes ☕️ #weekend #coffee #relax
+                    </div>
+                    <div class="post-comments">View all 1,245 comments</div>
+                    <div class="post-time">2 HOURS AGO</div>
+                </div>
+            </div>
+            
+            <!-- SEARCH PAGE -->
+            <div class="page" id="search-page">
+                <div class="search-header">
+                    <div class="search-input-container">
+                        <input type="text" class="search-input" placeholder="Search">
+                        <i class="fas fa-search" style="position: absolute; right: 15px; top: 14px; color: #8e8e8e;"></i>
+                    </div>
+                    <div class="search-cancel">Cancel</div>
+                </div>
+                <div class="search-categories">
+                    <div class="search-category active">All</div>
+                    <div class="search-category">Accounts</div>
+                    <div class="search-category">Audio</div>
+                    <div class="search-category">Tags</div>
+                    <div class="search-category">Places</div>
+                </div>
+                <div class="search-results">
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                    <div class="search-result"></div>
+                </div>
+            </div>
+            
+            <!-- PROFILE PAGE -->
+            <div class="page" id="profile-page">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=100" alt="User">
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">127</div>
+                            <div class="profile-stat-label">Posts</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">1.4K</div>
+                            <div class="profile-stat-label">Followers</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">356</div>
+                            <div class="profile-stat-label">Following</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profile-username">your_username</div>
+                    <div class="profile-bio">Digital creator 📸 Travel & Lifestyle ✨</div>
+                </div>
+                <button class="profile-edit-btn">Edit Profile</button>
+                <div class="profile-highlights">
+                    <div class="profile-highlight">
+                        <div class="highlight-circle">✈️</div>
+                        <div class="highlight-name">Travel</div>
+                    </div>
+                    <div class="profile-highlight">
+                        <div class="highlight-circle">🍕</div>
+                        <div class="highlight-name">Food</div>
+                    </div>
+                    <div class="profile-highlight">
+                        <div class="highlight-circle">🏋️</div>
+                        <div class="highlight-name">Workout</div>
+                    </div>
+                </div>
+                <div class="profile-tabs">
+                    <div class="profile-tab active"><i class="fas fa-th"></i></div>
+                    <div class="profile-tab"><i class="fas fa-film"></i></div>
+                    <div class="profile-tab"><i class="fas fa-user-tag"></i></div>
+                </div>
+                <div class="profile-posts">
+                    <div class="profile-post"></div>
+                    <div class="profile-post"></div>
+                    <div class="profile-post"></div>
+                    <div class="profile-post"></div>
+                    <div class="profile-post"></div>
+                    <div class="profile-post"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-page="home-page">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" data-page="search-page">
+                <div class="nav-icon"><i class="fas fa-search"></i></div>
+                <div class="nav-label">Search</div>
+            </div>
+            <div class="nav-item reels active" data-page="reels-page">
+                <div class="nav-icon"><i class="fas fa-clapperboard"></i></div>
+                <div class="nav-label">Reels</div>
+            </div>
+            <div class="nav-item" id="nav-create-bottom">
+                <div class="nav-icon"><i class="fas fa-square-plus"></i></div>
+                <div class="nav-label">Create</div>
+            </div>
+            <div class="nav-item" data-page="profile-page">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <div class="nav-label">Profile</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const instagramContainer = document.getElementById('instagram-container');
+        const loginForm = document.getElementById('login-form');
+        const bottomNavItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+        const reelsContainer = document.getElementById('reels-page');
+        const reels = document.querySelectorAll('.reel');
+        const reelVideos = document.querySelectorAll('.reel-video');
+        const progressBars = document.querySelectorAll('.reel-progress-bar');
+        const logoHome = document.getElementById('logo-home');
+        
+        // Reel navigation variables
+        let currentReelIndex = 0;
+        let isScrolling = false;
+        let scrollTimeout;
+        
+        // Handle login
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // Hide login, show Instagram
+                loginContainer.style.display = 'none';
+                instagramContainer.style.display = 'block';
+                
+                // Update profile username
+                document.getElementById('profile-username').textContent = username || 'your_username';
+                
+                // Start playing the first reel
+                playCurrentReel();
+                
+                // Initialize touch/swipe for reels
+                initReelNavigation();
+            } else {
+                alert('Please enter username and password');
+            }
+        });
+        
+        // Play current reel video
+        function playCurrentReel() {
+            reelVideos.forEach((video, index) => {
+                if (index === currentReelIndex) {
+                    video.play().catch(e => console.log("Autoplay prevented:", e));
+                    video.muted = false;
+                } else {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+            
+            // Update progress bars
+            updateProgressBars();
+        }
+        
+        // Update progress bars
+        function updateProgressBars() {
+            progressBars.forEach((bar, index) => {
+                bar.classList.remove('active');
+                if (index === currentReelIndex) {
+                    bar.classList.add('active');
+                }
+            });
+        }
+        
+        // Initialize reel navigation (touch/swipe)
+        function initReelNavigation() {
+            let startY = 0;
+            let isDragging = false;
+            
+            reelsContainer.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+                isDragging = true;
+            }, { passive: true });
+            
+            reelsContainer.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                const currentY = e.touches[0].clientY;
+                const diffY = startY - currentY;
+                
+                // Vertical swipe detection
+                if (Math.abs(diffY) > 50) {
+                    if (diffY > 0 && currentReelIndex < reels.length - 1) {
+                        // Swipe up - next reel
+                        navigateToReel(currentReelIndex + 1);
+                        isDragging = false;
+                    } else if (diffY < 0 && currentReelIndex > 0) {
+                        // Swipe down - previous reel
+                        navigateToReel(currentReelIndex - 1);
+                        isDragging = false;
+                    }
+                }
+            }, { passive: true });
+            
+            reelsContainer.addEventListener('touchend', () => {
+                isDragging = false;
+            }, { passive: true });
+            
+            // Mouse wheel navigation for desktop
+            reelsContainer.addEventListener('wheel', (e) => {
+                if (isScrolling) return;
+                
+                isScrolling = true;
+                
+                if (e.deltaY > 0 && currentReelIndex < reels.length - 1) {
+                    // Scroll down - next reel
+                    navigateToReel(currentReelIndex + 1);
+                } else if (e.deltaY < 0 && currentReelIndex > 0) {
+                    // Scroll up - previous reel
+                    navigateToReel(currentReelIndex - 1);
+                }
+                
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    isScrolling = false;
+                }, 500);
+            });
+        }
+        
+        // Navigate to specific reel
+        function navigateToReel(index) {
+            if (index < 0 || index >= reels.length) return;
+            
+            // Hide current reel
+            reels[currentReelIndex].classList.remove('active');
+            
+            // Update index
+            currentReelIndex = index;
+            
+            // Show new reel
+            reels[currentReelIndex].classList.add('active');
+            
+            // Play new reel
+            playCurrentReel();
+        }
+        
+        // Bottom navigation
+        bottomNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const pageId = this.getAttribute('data-page');
+                
+                // Update active nav item
+                bottomNavItems.forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show selected page
+                if (pageId === 'reels-page') {
+                    // Show reels container
+                    reelsContainer.style.display = 'flex';
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    // Play current reel
+                    playCurrentReel();
+                } else {
+                    // Hide reels, show other page
+                    reelsContainer.style.display = 'none';
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === pageId) {
+                            page.classList.add('active');
+                        }
+                    });
+                    
+                    // Pause all reels when navigating away
+                    reelVideos.forEach(video => video.pause());
+                }
+            });
+        });
+        
+        // Logo home button
+        logoHome.addEventListener('click', function() {
+            bottomNavItems.forEach(navItem => navItem.classList.remove('active'));
+            document.querySelector('.nav-item[data-page="home-page"]').classList.add('active');
+            
+            reelsContainer.style.display = 'none';
+            pages.forEach(page => {
+                page.classList.remove('active');
+                if (page.id === 'home-page') {
+                    page.classList.add('active');
+                }
+            });
+            
+            reelVideos.forEach(video => video.pause());
+        });
+        
+        // Create button handlers
+        document.getElementById('nav-create').addEventListener('click', showCreateModal);
+        document.getElementById('nav-create-bottom').addEventListener('click', showCreateModal);
+        
+        function showCreateModal() {
+            alert('Create new post modal would open here');
+        }
+        
+        // Reel action handlers
+        document.addEventListener('click', function(e) {
+            // Like action
+            if (e.target.closest('[data-action="like"]')) {
+                const action = e.target.closest('[data-action="like"]');
+                const icon = action.querySelector('i');
+                const count = action.querySelector('.reel-action-count');
+                
+                if (icon.classList.contains('far')) {
+                    icon.className = 'fas fa-heart';
+                    icon.style.color = '#ed4956';
+                    
+                    // Increment like count
+                    let currentCount = parseInt(count.textContent.replace(/[^0-9]/g, ''));
+                    if (count.textContent.includes('K')) {
+                        count.textContent = (currentCount + 1).toLocaleString() + 'K';
+                    } else {
+                        count.textContent = (currentCount + 1).toLocaleString();
+                    }
+                    
+                    // Pulse animation
+                    icon.classList.add('pulse');
+                    setTimeout(() => icon.classList.remove('pulse'), 500);
+                } else {
+                    icon.className = 'far fa-heart';
+                    icon.style.color = '';
+                    
+                    // Decrement like count
+                    let currentCount = parseInt(count.textContent.replace(/[^0-9]/g, ''));
+                    if (count.textContent.includes('K')) {
+                        count.textContent = (currentCount - 1).toLocaleString() + 'K';
+                    } else {
+                        count.textContent = (currentCount - 1).toLocaleString();
+                    }
+                }
+            }
+            
+            // Follow button
+            if (e.target.closest('.reel-follow-btn')) {
+                const btn = e.target.closest('.reel-follow-btn');
+                if (btn.textContent === 'Follow') {
+                    btn.textContent = 'Following';
+                    btn.classList.add('following');
+                } else {
+                    btn.textContent = 'Follow';
+                    btn.classList.remove('following');
+                }
+            }
+            
+            // Back button in reels
+            if (e.target.closest('.reel-back')) {
+                bottomNavItems.forEach(navItem => navItem.classList.remove('active'));
+                document.querySelector('.nav-item[data-page="home-page"]').classList.add('active');
+                
+                reelsContainer.style.display = 'none';
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === 'home-page') {
+                        page.classList.add('active');
+                    }
+                });
+                
+                reelVideos.forEach(video => video.pause());
+            }
+        });
+        
+        // Search functionality
+        const searchCancel = document.querySelector('.search-cancel');
+        const searchCategories = document.querySelectorAll('.search-category');
+        
+        searchCancel.addEventListener('click', function() {
+            document.querySelector('.search-input').value = '';
+        });
+        
+        searchCategories.forEach(category => {
+            category.addEventListener('click', function() {
+                searchCategories.forEach(cat => cat.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Profile tabs
+        const profileTabs = document.querySelectorAll('.profile-tab');
+        profileTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                profileTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Pre-fill login for demo
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('username').value = 'instagram_user';
+            document.getElementById('password').value = 'password123';
+        });
+    </script>
+</body>
+</html>
